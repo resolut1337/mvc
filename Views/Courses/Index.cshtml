@@ -1,0 +1,37 @@
+@model IEnumerable<OnlineLearningMVC.Models.Course>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Курси</h2>
+<p><a class="btn btn-primary" href="@Url.Action("Create")">Додати курс</a></p>
+<table class="table">
+    <thead><tr><th>Title</th><th>Price</th><th></th></tr></thead>
+    <tbody>
+    @foreach(var c in Model) {
+        <tr>
+            <td>@c.Title</td>
+            <td>@c.Price</td>
+            <td>
+                <a class="btn btn-sm btn-secondary" href="@Url.Action("Edit", new { id = c.Id })">Edit</a>
+                <a class="btn btn-sm btn-danger" href="#" onclick="showDelete(@c.Id, '@Url.Action("Delete", new { id = c.Id })', '@c.Title')">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@Html.Partial("_DeleteConfirmPartial", Tuple.Create(0, "", ""))
+@section Scripts {
+<script>
+function showDelete(id, url, name){
+  var modal = $('#deleteConfirmModal');
+  if(!modal.length){
+    modal = $('#deleteConfirmModal');
+  }
+  modal.find('form').attr('action', url);
+  modal.find('input[name="id"]').val(id);
+  var bsModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+  bsModal.show();
+}
+</script>
+}
